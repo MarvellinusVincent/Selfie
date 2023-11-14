@@ -5,6 +5,7 @@ import android.text.format.DateUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,19 +14,39 @@ import com.example.selfieaday.model.Post
 import java.math.BigInteger
 import java.security.MessageDigest
 
+/**
+ * Adapter for displaying a list of [Post] items in a RecyclerView.
+ *
+ * @param context The application context.
+ */
 class PostsAdapter(val context: Context)
     : ListAdapter<Post, PostsAdapter.PostItemViewHolder>(PostDiffItemCallback()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            : PostItemViewHolder = PostItemViewHolder.inflateFrom(parent)
+
+    /**
+     * Called when RecyclerView needs a new [PostItemViewHolder] of the given type to represent
+     * an item.
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostItemViewHolder {
+        return PostItemViewHolder.inflateFrom(parent)
+    }
+
+    /**
+     * Called by RecyclerView to display the data at the specified position.
+     */
     override fun onBindViewHolder(holder: PostItemViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item, context)
     }
 
-    class PostItemViewHolder(val binding: PostItemBinding)
-        : RecyclerView.ViewHolder(binding.root) {
+    /**
+     * View holder class for displaying a single [Post] item.
+     */
+    class PostItemViewHolder(val binding: PostItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         companion object {
+            /**
+             * Inflates the layout for a [PostItemViewHolder].
+             */
             fun inflateFrom(parent: ViewGroup): PostItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = PostItemBinding.inflate(layoutInflater, parent, false)
@@ -33,15 +54,27 @@ class PostsAdapter(val context: Context)
             }
         }
 
+        /**
+         * Binds the data of a [Post] to the view holder.
+         */
         fun bind(post: Post, context: Context) {
             Glide.with(context).load(post.imageUrl).into(binding.ivPost)
+
+            /** Set click listener for the image */
+            binding.ivPost.setOnClickListener {
+                /** Call a function to handle the click and navigate to full-screen view */
+                onImageClicked(post.imageUrl, context)
+            }
         }
-        private fun getProfileImageUrl(username: String): String {
-            val digest = MessageDigest.getInstance("MD5")
-            val hash = digest.digest(username.toByteArray())
-            val bigInt = BigInteger(hash)
-            val hex = bigInt.abs().toString(16)
-            return "https://www.gravatar.com/avatar/$hex?d=identicon"
+
+        /**
+         * Handles the click on the image and navigates to the full-screen view.
+         */
+        private fun onImageClicked(imageUrl: String, context: Context) {
+            /** You can navigate to a new fragment or activity here */
+            /** For simplicity, let's assume you have a FullScreenFragment */
+            val action = PostsFragmentDirections.actionPostsFragmentToFullScreenFragment(imageUrl)
+            itemView.findNavController().navigate(action)
         }
     }
 }

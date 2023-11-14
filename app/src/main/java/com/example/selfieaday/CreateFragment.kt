@@ -21,15 +21,22 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 
-
+/**
+ * Fragment for creating and posting a new selfie.
+ */
 class CreateFragment : Fragment() {
-    val TAG = "CreateFragment"
+    private val TAG = "CreateFragment"
     private var _binding: FragmentCreateBinding? = null
     private val binding get() = _binding!!
     private var photoUri: Uri? = null
     private var uri: Uri? = null
     private lateinit var firestoreDb: FirebaseFirestore
     private lateinit var storageReference: StorageReference
+
+    /**
+     * Inflates the layout for this fragment, initializes necessary variables,
+     * and starts the process of taking a picture.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,42 +45,56 @@ class CreateFragment : Fragment() {
         val view = binding.root
         val photoFile = createImageFile()
         try {
-            uri = FileProvider.getUriForFile(this.requireContext(), "com.example.fileprovider", photoFile)
+            uri = FileProvider.getUriForFile(
+                this.requireContext(),
+                "com.example.fileprovider",
+                photoFile
+            )
         } catch (e: Exception) {
             Log.e(TAG, "Error: ${e.message}")
         }
         firestoreDb = FirebaseFirestore.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
-        val pickMedia = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success) {
-                Log.d(TAG, "Selected URI: $uri")
-                photoUri = uri
-                postThePhoto()
-            } else {
-                Log.d(TAG, "No media selected")
+
+        /** Set up the activity result launcher for taking a picture */
+        val pickMedia =
+            registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+                if (success) {
+                    Log.d(TAG, "Selected URI: $uri")
+                    photoUri = uri
+                    postThePhoto()
+                } else {
+                    Log.d(TAG, "No media selected")
+                }
             }
-        }
         pickMedia.launch(uri)
         return view
     }
 
-
+    /**
+     * Posts the selected photo to Firebase Storage and adds a corresponding post to Firestore.
+     */
     private fun postThePhoto() {
         if (photoUri == null) {
-            Toast.makeText(this.requireContext(), "No photo selected", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this.requireContext(),
+                "No photo selected",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
         val photoUploadUri = photoUri as Uri
         val photoReference =
             storageReference.child("images/${System.currentTimeMillis()}-photo.jpg")
-        // Upload photo to Firebase Storage
+
+        /** Upload photo to Firebase Storage */
         photoReference.putFile(photoUploadUri)
             .continueWithTask { photoUploadTask ->
                 Log.i(TAG, "uploaded bytes: ${photoUploadTask.result?.bytesTransferred}")
-                // Retrieve image url of the uploaded image
+                /** Retrieve image URL of the uploaded image */
                 photoReference.downloadUrl
             }.continueWithTask { downloadUrlTask ->
-                // Create a post object with the image URL and add that to the posts collection
+                /** Create a post object with the image URL and add that to the posts collection */
                 val post = Post(
                     downloadUrlTask.result.toString(),
                     System.currentTimeMillis(),
@@ -82,26 +103,32 @@ class CreateFragment : Fragment() {
             }.addOnCompleteListener { postCreationTask ->
                 if (!postCreationTask.isSuccessful) {
                     Log.e(TAG, "Exception during Firebase operations", postCreationTask.exception)
-                    Toast.makeText(this.requireContext(), "Failed to save post", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        this.requireContext(),
+                        "Failed to save post",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 Toast.makeText(this.requireContext(), "Success!", Toast.LENGTH_SHORT).show()
             }
         navigateToPostsScreen()
     }
 
+    /**
+     * Navigates to the Posts screen after a successful post creation.
+     */
     private fun navigateToPostsScreen() {
         binding.root.findNavController().navigate(R.id.action_createFragment_to_postsFragment)
     }
 
-    fun createImageFile() : File {
-        var timestamp = SimpleDateFormat("yyyyMMdd_HHmmss")
+    /**
+     * Creates a temporary image file with a unique name based on timestamp.
+     */
+    fun createImageFile(): File {
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss")
             .format(Date())
-        val imageDirectory = this.context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("file_${timestamp}"
-            , ".jpg"
-            , imageDirectory)
+        val imageDirectory =
+            this.context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("file_${timestamp}", ".jpg", imageDirectory)
     }
-
-
 }

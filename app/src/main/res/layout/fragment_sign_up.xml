@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+    This LinearLayout serves as the root container for the SignUpFragment layout.
+    It is a vertical container, meaning its children will be stacked vertically.
+-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,7 +11,10 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:orientation="vertical">
-
+    <!--
+        This EditText is for entering the user's email during the sign-up process.
+        It has match_parent width, wrap_content height, and an email input type.
+    -->
     <EditText
         android:id="@+id/signUpEmail"
         android:layout_width="match_parent"
@@ -16,7 +22,10 @@
         android:ems="10"
         android:hint="email"
         android:inputType="textEmailAddress" />
-
+    <!--
+    This EditText is for entering the user's password during the sign-up process.
+    It has match_parent width, wrap_content height, and a password input type.
+    -->
     <EditText
         android:id="@+id/signUpPassword"
         android:layout_width="match_parent"
@@ -24,7 +33,10 @@
         android:ems="10"
         android:hint="password"
         android:inputType="textPassword" />
-
+    <!--
+    This EditText is for verifying the user's password during the sign-up process.
+    It has match_parent width, wrap_content height, and a password input type.
+    -->
     <EditText
         android:id="@+id/verifyPassword"
         android:layout_width="match_parent"
@@ -32,7 +44,10 @@
         android:ems="10"
         android:hint="verify password"
         android:inputType="textPassword" />
-
+    <!--
+    This Button triggers the sign-up action.
+    It has match_parent width, wrap_content height, and displays "Sign Up" text.
+    -->
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"

@@ -1,0 +1,25 @@
+<!-- fragment_full_screen.xml -->
+<!--
+    This LinearLayout serves as the root container for the FullScreenFragment layout.
+    It is set to match the parent's width and height, and it has a black background.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context=".FullScreenFragment">
+
+    <!--
+    This ImageView displays the full-screen image. It has match_parent dimensions,
+    uses fitCenter scaling to maintain the aspect ratio, and is centered within the parent.
+    -->
+    <ImageView
+        android:id="@+id/ivFullScreenImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:layout_centerInParent="true" />
+
+</LinearLayout>

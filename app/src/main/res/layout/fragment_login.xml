@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    This LinearLayout serves as the root container for the LoginFragment layout.
+    It is a vertical container, meaning its children will be stacked vertically.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +13,10 @@
     android:orientation="vertical"
     tools:context=".LoginFragment">
 
+    <!--
+     This EditText is for entering the user's email.
+     It has match_parent width, wrap_content height, and an email input type.
+    -->
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
@@ -16,7 +24,10 @@
         android:ems="10"
         android:hint="email"
         android:inputType="textEmailAddress" />
-
+    <!--
+    This EditText is for entering the user's password.
+    It has match_parent width, wrap_content height, and a password input type.
+    -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
@@ -24,13 +35,19 @@
         android:ems="10"
         android:hint="password"
         android:inputType="textPassword" />
-
+    <!--
+    This Button triggers the login action.
+    It has match_parent width, wrap_content height, and displays "Login" text.
+    -->
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login" />
-
+    <!--
+    This Button navigates to the Sign Up screen.
+    It has match_parent width, wrap_content height, and displays "Sign Up" text.
+    -->
     <Button
         android:id="@+id/btnGoSignUp"
         android:layout_width="match_parent"

@@ -11,8 +11,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObjects
 
+/**
+ * ViewModel for managing data related to posts.
+ */
 class PostsViewModel : ViewModel() {
-
 
     val TAG = "PostsViewModel"
     private val _posts: MutableLiveData<MutableList<Post>> = MutableLiveData()
@@ -26,8 +28,11 @@ class PostsViewModel : ViewModel() {
     val navigateToCamera: LiveData<Boolean>
         get() = _navigateToCamera
 
+    /**
+     * Initializes the ViewModel by retrieving posts from Firestore and setting up the snapshot listener.
+     */
     init {
-        val  firestoreDB = FirebaseFirestore.getInstance()
+        val firestoreDB = FirebaseFirestore.getInstance()
         var postsReference = firestoreDB
             .collection("posts")
             .limit(30)
@@ -46,6 +51,9 @@ class PostsViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Initializes the accelerometer sensor and sets up the listener for sensor data changes.
+     */
     fun initializeSensors(sAccelerometer: MeasurableSensor) {
         accelerometerSensor = sAccelerometer
         accelerometerSensor.startListening()
@@ -64,10 +72,9 @@ class PostsViewModel : ViewModel() {
         }
     }
 
-    fun signOut() {
-        FirebaseAuth.getInstance().signOut()
-    }
-
+    /**
+     * Resets the navigation state after navigating to the camera.
+     */
     fun onNavigatedToCamera() {
         _navigateToCamera.value = false
     }

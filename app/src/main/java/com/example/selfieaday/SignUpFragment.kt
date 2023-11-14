@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 
-
 class SignUpFragment : Fragment() {
     private val TAG = "SignUpFragment"
 
@@ -20,33 +19,37 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        /** Inflate the layout for this fragment */
         val view = inflater.inflate(R.layout.fragment_sign_up, container, false)
         val auth = FirebaseAuth.getInstance()
-        val btnLogin = view.findViewById<Button>(R.id.btnSignUp)
-        btnLogin.setOnClickListener {
-            btnLogin.isEnabled = false
+        val btnSignUp = view.findViewById<Button>(R.id.btnSignUp)
+
+        btnSignUp.setOnClickListener {
+            btnSignUp.isEnabled = false
             val etEmail = view.findViewById<TextView>(R.id.signUpEmail)
             val etPassword = view.findViewById<TextView>(R.id.signUpPassword)
             val verifyPassword = view.findViewById<TextView>(R.id.verifyPassword)
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
             val confirmPassword = verifyPassword.text.toString()
+
             if (email.isBlank() || password.isBlank()) {
                 Toast.makeText(this.context, "Email/password cannot be empty", Toast.LENGTH_SHORT).show()
-                btnLogin.isEnabled = true
+                btnSignUp.isEnabled = true
                 return@setOnClickListener
             }
+
             if (password != confirmPassword) {
-                Toast.makeText(this.context, "Passwords dont match", Toast.LENGTH_SHORT).show()
-                btnLogin.isEnabled = true
+                Toast.makeText(this.context, "Passwords don't match", Toast.LENGTH_SHORT).show()
+                btnSignUp.isEnabled = true
                 return@setOnClickListener
             }
-            // Firebase authentication check
+
+            /** Firebase authentication check */
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
-                    btnLogin.isEnabled = true
-//                    goToSignInScreen()
+                    btnSignUp.isEnabled = true
+                    goToSignInScreen()
                 } else {
                     Toast.makeText(this.context, "Unsuccessful", Toast.LENGTH_SHORT).show()
                 }
@@ -55,8 +58,7 @@ class SignUpFragment : Fragment() {
         return view
     }
 
-//    private fun goToSignInScreen() {
-//        this.findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
-//    }
-
+    private fun goToSignInScreen() {
+        this.findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+    }
 }

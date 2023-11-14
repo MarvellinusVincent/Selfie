@@ -10,4 +10,11 @@
     android:name="androidx.navigation.fragment.NavHostFragment"
     app:navGraph="@navigation/nav_graph"
     app:defaultNavHost="true"
-    tools:context=".MainActivity" />
+    tools:context=".MainActivity">
+
+    <!--
+        This FragmentContainerView serves as the container for the navigation host fragment.
+        It hosts the navigation graph specified by app:navGraph, enabling navigation within the app.
+    -->
+
+</androidx.fragment.app.FragmentContainerView>

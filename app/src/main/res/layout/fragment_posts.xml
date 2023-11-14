@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    This layout uses the Data Binding library.
+    The data tag defines a variable named "viewModel" of type "PostsViewModel".
+-->
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -8,11 +12,21 @@
             type="com.example.selfieaday.PostsViewModel" />
     </data>
 
+    <!--
+    This ConstraintLayout serves as the root container for the PostsFragment layout.
+    It is set to match the parent's width and height.
+    -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".PostsFragment">
 
+        <!--
+        This RecyclerView displays a list of posts.
+        It has match_parent width, 0dp height (to allow for dynamic resizing),
+        and is constrained to the start, end, and bottom of the parent.
+        The layout manager is set to LinearLayoutManager, and each item is defined in "post_item.xml".
+        -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPosts"
             android:layout_width="match_parent"

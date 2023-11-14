@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Navigation Graph -->
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/splashFragment">
 
+    <!-- Splash Fragment -->
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.selfieaday.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <!-- Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.selfieaday.LoginFragment"
@@ -13,7 +27,23 @@
         <action
             android:id="@+id/action_loginFragment_to_postsFragment"
             app:destination="@id/postsFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@+id/signUpFragment"/>
     </fragment>
+
+    <!-- Sign Up Fragment -->
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.selfieaday.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <!-- Posts Fragment -->
     <fragment
         android:id="@+id/postsFragment"
         android:name="com.example.selfieaday.PostsFragment"
@@ -22,7 +52,12 @@
         <action
             android:id="@+id/action_postsFragment_to_createFragment"
             app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/actionPostsFragmentToFullScreenFragment"
+            app:destination="@id/fullScreenFragment"/>
     </fragment>
+
+    <!-- Create Fragment -->
     <fragment
         android:id="@+id/createFragment"
         android:name="com.example.selfieaday.CreateFragment"
@@ -31,5 +66,16 @@
         <action
             android:id="@+id/action_createFragment_to_postsFragment"
             app:destination="@id/postsFragment" />
+    </fragment>
+
+    <!-- Full Screen Fragment -->
+    <fragment
+        android:id="@+id/fullScreenFragment"
+        android:name="com.example.selfieaday.FullScreenFragment"
+        android:label="fragment_full_screen"
+        tools:layout="@layout/fragment_full_screen" >
+        <argument
+            android:name="imageUrl"
+            app:argType="string" />
     </fragment>
 </navigation>
